@@ -1,0 +1,8 @@
+*.pyc
+.idea/
+*.sqlite3
+__pycache__/
+*.mo
+*.egg-info
+settingslocal.py
+.env/
