@@ -37,6 +37,16 @@ class ShorterTest(TestCase):
         self.assertEqual(url, link.url)
         self.assertIn(short_url, response.content.decode('utf8'))
 
+    def test_redirect_to_long_url(self):
+        url = "http://example.com/"
+        link = Link.objects.create(url=url)
+        short_link = Link.shorter(link)
+        response = self.client.get(reverse("shorter:redirect",
+                                           kwargs={'short_url': short_link})
+                                   )
+        self.assertRedirects(response, url)
+
+
 
 
 
