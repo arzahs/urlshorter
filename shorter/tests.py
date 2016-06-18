@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 from shorter.models import Link
 # Create your tests here.
 
@@ -18,6 +19,24 @@ class ShorterTest(TestCase):
         link.save()
         expand_url = Link.expand(short_link)
         self.assertEqual(expand_url, url)
+
+    def test_homepage(self):
+        response = self.client.get(reverse("shorter:home"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('form', response.context)
+
+    def test_shorter_form(self):
+
+        url = "http://example.com/"
+        response = self.client.post(reverse("shorter:home"),
+                                    {"url": url}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("link", response.context)
+        link = response.context['link']
+        short_url = Link.shorter(link)
+        self.assertEqual(url, link.url)
+        self.assertIn(short_url, response.content.decode('utf8'))
+
 
 
 
