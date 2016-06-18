@@ -9,7 +9,7 @@ class ShorterTest(TestCase):
         url = 'http://testing_long.url/test'
         link = Link(url=url)
         short_link = Link.shorter(link)
-        self.assertLess(len(short_link), len(short_link))
+        self.assertLess(len(short_link), len(url))
 
     def test_expand(self):
         url = 'http://testing_long.url/test'
